@@ -16,8 +16,20 @@ class Encryption:
 
         return wordEncrypt
 
+    def decrypt(self, word:str) -> str:
+        KEY_WORD:bytes = self.__keyWord
 
+        if KEY_WORD is None or (len(KEY_WORD) * 8) <= 32:
+            KEY_WORD = Fernet.generate_key()
+
+        f = Fernet(KEY_WORD)
+        wordEncrypt = f.decrypt(word.encode()).decode()
+
+        return wordEncrypt
 
 m = Encryption()
-print(m.encrypt("IanDavidGarciaGarcia2025"))
+x = m.encrypt("IanDavidGarciaGarcia2025")
+
+print(x)
+print(m.decrypt(x))
         
