@@ -1,4 +1,4 @@
-from hashlib import blake2b
+from cryptography.fernet import Fernet
 import os
 
 class Encryption:
@@ -8,12 +8,16 @@ class Encryption:
     def encrypt(self, word:str) -> str:
         KEY_WORD:bytes = self.__keyWord
 
-        if KEY_WORD is None:
-            KEY_WORD = b"palabraSecretaMuySecreta"
-        
-        h = blake2b(key = KEY_WORD, digest_size = 32)
-        h.update(word)
+        if KEY_WORD is None or (len(KEY_WORD) * 8) <= 32:
+            KEY_WORD = Fernet.generate_key()
 
-        return h.hexdigest()
-        
+        f = Fernet(KEY_WORD)
+        wordEncrypt = f.encrypt(word.encode()).decode()
 
+        return wordEncrypt
+
+
+
+m = Encryption()
+print(m.encrypt("IanDavidGarciaGarcia2025"))
+        
